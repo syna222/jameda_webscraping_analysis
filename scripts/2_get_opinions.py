@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+import os
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -7,8 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import time
 
+load_dotenv()
 
-with open("../files/gp_links.txt", "r", encoding="utf-8") as infile, open("../files/all_reviews.xml", "a",  encoding="utf-8") as outfile: 
+with open(os.getenv("GP_LINKS"), "r", encoding="utf-8") as infile, open(os.getenv("ALL_REVIEWS"), "a",  encoding="utf-8") as outfile: 
     
     # start xml:
     outfile.write('<?xml version="1.0" encoding="UTF-8"?>\n<document>\n')

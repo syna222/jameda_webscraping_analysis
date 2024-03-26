@@ -6,6 +6,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from sentence_transformers import SentenceTransformer
 import spacy.cli #german tagger
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # stopwords
 #nltk.download("punkt")
@@ -30,7 +34,7 @@ def remove_stopwords(data):  # data = array of strings
     return output_list
     
 
-df = pd.read_csv("../files/reviews_ratings_saved.csv")
+df = pd.read_csv(os.getenv("REVIEWS_CSV"))
 
 #print(df.head(), "\n")
 print(df.shape, "\n")
@@ -60,11 +64,17 @@ modelPositive = BERTopic(embedding_model="paraphrase-multilingual-MiniLM-L12-v2"
 pos_topics, pos_probabilites = modelPositive.fit_transform(posRat_texts)
 
 # show:
-print(modelNegative.get_topic_freq().head(11))
+neg_modelpreview = modelNegative.get_topic_freq().head(20)
+neg_topics = modelNegative.get_topics().items()
 #print(modelNegative.get_topic(0))
-print(modelPositive.get_topic_freq().head(11))
-#print(modelPositive.get_topic(0))
+for topic_id, keywords in neg_topics:
+    print(f"Topic {topic_id}: {keywords}\n")
 
+pos_modelpreview = modelPositive.get_topic_freq().head(20)
+pos_topics = modelPositive.get_topics().items()
+#print(modelPositive.get_topic(0))
+for topic_id, keywords in pos_topics:
+    print(f"Topic {topic_id}: {keywords}\n")
 
 
 

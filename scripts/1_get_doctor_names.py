@@ -1,12 +1,15 @@
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+import os
 import requests
+
+load_dotenv()
 
 # get names of all general practicioners (private and state insurance) in Cologne
 doctor_pages = []
 doctor_namelinks = []
 
-base_url = r"https://www.jameda.de/suchen?q=Allgemeinmediziner%20(Hausarzt)&loc=K%C3%B6ln&filters[entity_type][]=doctor&filters[specializations][]=33&sorter=rating" #&page=" #until no more pages
+base_url = os.getenv("BASE_URL") #&page=" #until no more pages
 
 # get max page number:
 page = requests.get(base_url)
@@ -19,7 +22,7 @@ for i in range(1, max_page_num + 1):
     url = base_url + "&page=" + str(i)
     doctor_pages.append(url)
 
-with open("../files/gp_links.txt", "a") as file:
+with open(os.getenv("GP_LINKS"), "a") as file:
     # for each page in doctor_pages, visit page, grab all doctor names/links and append them to the doctor_namelinks list:
     for page_link in doctor_pages:
         page = requests.get(page_link)
