@@ -36,6 +36,11 @@ def remove_stopwords(data):  # data = array of strings
 
 df = pd.read_csv(os.getenv("REVIEWS_CSV"))
 
+# show review overview/preview:
+print(df.shape, "\n")
+print(df.head(), "\n")
+print(df["rating"].value_counts(), "\n")
+
 #print(df.head(), "\n")
 print(df.shape, "\n")
 
@@ -64,15 +69,15 @@ modelPositive = BERTopic(embedding_model="paraphrase-multilingual-MiniLM-L12-v2"
 pos_topics, pos_probabilites = modelPositive.fit_transform(posRat_texts)
 
 # show:
+print("negative ratings:")
 neg_modelpreview = modelNegative.get_topic_freq().head(20)
 neg_topics = modelNegative.get_topics().items()
-#print(modelNegative.get_topic(0))
 for topic_id, keywords in neg_topics:
     print(f"Topic {topic_id}: {keywords}\n")
 
+print("\n\npositive ratings:")
 pos_modelpreview = modelPositive.get_topic_freq().head(20)
 pos_topics = modelPositive.get_topics().items()
-#print(modelPositive.get_topic(0))
 for topic_id, keywords in pos_topics:
     print(f"Topic {topic_id}: {keywords}\n")
 
